@@ -72,4 +72,4 @@ func format_date(date):
 	var day = String(date.day).pad_zeros(2)
 	var month = String(date.month).pad_zeros(2)
 	var year = String(date.year).right(2)
-	return day + "-" + month + "-" + year
+	return day + "/" + month + "/" + year

@@ -8,7 +8,6 @@ var birds = [
 
 func _ready():
 	get_node("menu").get_node("show_scores").play("slide_scores")
-	# score format = Score, Bird used index, Day or night index
 	var scores = utils.load_high_scores()
 	var nodes = [
 		"first_score",
@@ -24,5 +23,5 @@ func _ready():
 			current_node.visible = scores[i].score >= 0
 			current_node.get_child(0).text = str(scores[i].score)
 			current_node.get_child(1).texture = birds[scores[i].bird]
-			current_node.get_child(2).text = scores[i].time_of_day
+			current_node.get_child(2).text = scores[i].time_of_day.replace('-', '/')
 			current_node.get_child(3).text = str(scores[i].flaps)

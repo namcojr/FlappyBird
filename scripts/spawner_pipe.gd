@@ -1,6 +1,8 @@
 #scripts: spawner_pipe
  
 extends Node2D
+
+var wait_pipes = 3
 	
 const scn_pipe = preload("res://scenes/pipe.tscn")
 const PIPE_WIDTH = 26
@@ -17,6 +19,10 @@ func _ready():
 	
 func _on_bird_state_changed(bird):
 	if bird.get_state() == bird.STATE_FLAPPING:
+		
+		yield(get_tree(), "idle_frame")
+		yield(get_tree().create_timer(2.5), "timeout")
+		
 		start()
 	pass
 
@@ -35,6 +41,7 @@ func go_init_pos():
 		init_pos.x += camera.get_total_pos().x
 	position = init_pos
 	pass
+
 func spawn_and_move():
 	spawn_pipe()
 	go_next_pos()
@@ -42,9 +49,9 @@ func spawn_and_move():
 	
 func spawn_pipe():
 	var new_pipe = scn_pipe.instance()
-
 	var probability = 0.002 # 0.2% chance of appearing a red pipe
 	var random_number = randf()
+
 	if random_number <= probability:
 		new_pipe.get_child(0).texture = load("res://sprites/pipe_red_top.png")
 		new_pipe.get_child(1).texture = load("res://sprites/pipe_red_bottom.png")
