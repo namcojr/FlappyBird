@@ -19,9 +19,6 @@ func _on_bird_state_changed(bird):
 	if bird.get_state() == bird.STATE_FLAPPING:
 		start()
 	pass
-	
-#func _process(delta):
-#	pass
 
 func start():
 	go_init_pos()
@@ -45,6 +42,16 @@ func spawn_and_move():
 	
 func spawn_pipe():
 	var new_pipe = scn_pipe.instance()
+
+	var probability = 0.002 # 0.2% chance of appearing a red pipe
+	var random_number = randf()
+	if random_number <= probability:
+		new_pipe.get_child(0).texture = load("res://sprites/pipe_red_top.png")
+		new_pipe.get_child(1).texture = load("res://sprites/pipe_red_bottom.png")
+	else:
+		new_pipe.get_child(0).texture = load("res://sprites/pipe_green_top.png")
+		new_pipe.get_child(1).texture = load("res://sprites/pipe_green_bottom.png")
+
 	new_pipe.position = position;
 	new_pipe.connect("tree_exited", self, "spawn_and_move")
 	get_node("container").add_child(new_pipe)

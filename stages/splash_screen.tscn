@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sprites/gears.png" type="Texture" id=1]
+[ext_resource path="res://scripts/copyright.gd" type="Script" id=2]
+
+[node name="splash_screen" type="Node2D"]
+
+[node name="background" type="CanvasLayer" parent="."]
+
+[node name="background" type="ColorRect" parent="background"]
+margin_right = 144.0
+margin_bottom = 256.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="copyright" type="TextureRect" parent="background"]
+margin_left = 28.0
+margin_top = 113.0
+margin_right = 621.0
+margin_bottom = 266.0
+rect_scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 1 )
+stretch_mode = 5
+script = ExtResource( 2 )
+
+[node name="splash_timer" type="Timer" parent="."]
+wait_time = 2.0

@@ -11,7 +11,3 @@ func _on_button_pressed():
 	stage_manager.change_stage(stage_manager.GAME_STAGE)
 	disabled = true
 	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

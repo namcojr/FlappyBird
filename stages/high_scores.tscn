@@ -1,0 +1,391 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://fonts/font_score.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://sprites/bird_blue_1.png" type="Texture" id=2]
+[ext_resource path="res://sprites/button_score_normal.png" type="Texture" id=3]
+[ext_resource path="res://sprites/button_menu.png" type="Texture" id=4]
+[ext_resource path="res://scripts/high_scores.gd" type="Script" id=5]
+[ext_resource path="res://sprites/background_night.png" type="Texture" id=6]
+[ext_resource path="res://scripts/menu_button.gd" type="Script" id=7]
+
+[sub_resource type="DynamicFont" id=3]
+size = 10
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 14
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 10
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 10
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "slide_scores"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("first_score:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Vector2( -144, 78 ), Vector2( 0, 78 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("second_score:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Vector2( 144, 103 ), Vector2( 0, 103 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("third_score:rect_position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Vector2( -144, 128 ), Vector2( 0, 128 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("fourth_score:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Vector2( 144, 153 ), Vector2( 0, 153 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("fifth_score:rect_position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Vector2( -144, 178 ), Vector2( 0, 178 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("controls/score_legend:rect_position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -20 ), Vector2( 0, 60 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("controls/high_score:rect_position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.5, 1.4 ),
+"transitions": PoolRealArray( 1, 2.5, 1 ),
+"update": 0,
+"values": [ Vector2( 46, -30 ), Vector2( 46, -30 ), Vector2( 46, 15 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("controls/menu_button:rect_position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.5, 1.4 ),
+"transitions": PoolRealArray( 1, 2.5, 1 ),
+"update": 0,
+"values": [ Vector2( 52, 256 ), Vector2( 52, 256 ), Vector2( 52, 220 ) ]
+}
+
+[node name="high_scores" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="menu" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="menu"]
+margin_right = 144.0
+margin_bottom = 256.0
+texture = ExtResource( 6 )
+
+[node name="controls" type="Container" parent="menu"]
+margin_right = 144.0
+margin_bottom = 256.0
+
+[node name="high_score" type="TextureRect" parent="menu/controls"]
+margin_left = 46.0
+margin_top = 15.0
+margin_right = 98.0
+margin_bottom = 44.0
+texture = ExtResource( 3 )
+
+[node name="menu_button" type="TextureButton" parent="menu/controls"]
+margin_left = 52.0
+margin_top = 220.0
+margin_right = 92.0
+margin_bottom = 234.0
+texture_normal = ExtResource( 4 )
+script = ExtResource( 7 )
+
+[node name="score_legend" type="Label" parent="menu/controls"]
+margin_top = 60.0
+margin_right = 144.0
+margin_bottom = 72.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "   BIRD   DATE  FLAPS SCORE"
+align = 3
+
+[node name="first_score" type="Container" parent="menu"]
+margin_top = 78.0
+margin_right = 144.0
+margin_bottom = 103.0
+
+[node name="score" type="Label" parent="menu/first_score"]
+margin_left = 108.0
+margin_top = 4.0
+margin_right = 138.0
+margin_bottom = 24.0
+grow_horizontal = 0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 2
+
+[node name="bird" type="TextureRect" parent="menu/first_score"]
+margin_left = 12.0
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 30.0
+texture = ExtResource( 2 )
+stretch_mode = 3
+
+[node name="date" type="Label" parent="menu/first_score"]
+margin_left = 37.0
+margin_top = 6.0
+margin_right = 82.0
+margin_bottom = 18.0
+grow_horizontal = 2
+rect_min_size = Vector2( 45, 12 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+align = 1
+
+[node name="flaps" type="Label" parent="menu/first_score"]
+margin_left = 80.0
+margin_top = 6.0
+margin_right = 105.0
+margin_bottom = 20.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "0"
+align = 2
+
+[node name="second_score" type="Container" parent="menu"]
+margin_top = 103.0
+margin_right = 144.0
+margin_bottom = 128.0
+
+[node name="score" type="Label" parent="menu/second_score"]
+margin_left = 108.0
+margin_top = 4.0
+margin_right = 138.0
+margin_bottom = 24.0
+grow_horizontal = 0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 2
+
+[node name="bird" type="TextureRect" parent="menu/second_score"]
+margin_left = 12.0
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 30.0
+texture = ExtResource( 2 )
+stretch_mode = 3
+
+[node name="date" type="Label" parent="menu/second_score"]
+margin_left = 37.0
+margin_top = 6.0
+margin_right = 82.0
+margin_bottom = 18.0
+grow_horizontal = 2
+rect_min_size = Vector2( 45, 12 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+align = 1
+
+[node name="flaps" type="Label" parent="menu/second_score"]
+margin_left = 80.0
+margin_top = 6.0
+margin_right = 105.0
+margin_bottom = 20.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "0"
+align = 2
+
+[node name="third_score" type="Container" parent="menu"]
+margin_top = 128.0
+margin_right = 144.0
+margin_bottom = 153.0
+
+[node name="score" type="Label" parent="menu/third_score"]
+margin_left = 108.0
+margin_top = 4.0
+margin_right = 138.0
+margin_bottom = 24.0
+grow_horizontal = 0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 2
+
+[node name="bird" type="TextureRect" parent="menu/third_score"]
+margin_left = 12.0
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 30.0
+texture = ExtResource( 2 )
+stretch_mode = 3
+
+[node name="date" type="Label" parent="menu/third_score"]
+margin_left = 37.0
+margin_top = 6.0
+margin_right = 82.0
+margin_bottom = 18.0
+grow_horizontal = 2
+rect_min_size = Vector2( 45, 12 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+align = 1
+
+[node name="flaps" type="Label" parent="menu/third_score"]
+margin_left = 80.0
+margin_top = 6.0
+margin_right = 105.0
+margin_bottom = 20.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "0"
+align = 2
+
+[node name="fourth_score" type="Container" parent="menu"]
+margin_top = 153.0
+margin_right = 144.0
+margin_bottom = 178.0
+
+[node name="score" type="Label" parent="menu/fourth_score"]
+margin_left = 108.0
+margin_top = 4.0
+margin_right = 138.0
+margin_bottom = 24.0
+grow_horizontal = 0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 2
+
+[node name="bird" type="TextureRect" parent="menu/fourth_score"]
+margin_left = 12.0
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 30.0
+texture = ExtResource( 2 )
+stretch_mode = 3
+
+[node name="date" type="Label" parent="menu/fourth_score"]
+margin_left = 37.0
+margin_top = 6.0
+margin_right = 82.0
+margin_bottom = 18.0
+grow_horizontal = 2
+rect_min_size = Vector2( 45, 12 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+align = 1
+
+[node name="flaps" type="Label" parent="menu/fourth_score"]
+margin_left = 80.0
+margin_top = 6.0
+margin_right = 105.0
+margin_bottom = 20.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "0"
+align = 2
+
+[node name="fifth_score" type="Container" parent="menu"]
+margin_top = 178.0
+margin_right = 144.0
+margin_bottom = 203.0
+
+[node name="score" type="Label" parent="menu/fifth_score"]
+margin_left = 108.0
+margin_top = 4.0
+margin_right = 138.0
+margin_bottom = 24.0
+grow_horizontal = 0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 2
+
+[node name="bird" type="TextureRect" parent="menu/fifth_score"]
+margin_left = 12.0
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 30.0
+texture = ExtResource( 2 )
+stretch_mode = 3
+
+[node name="date" type="Label" parent="menu/fifth_score"]
+margin_left = 37.0
+margin_top = 6.0
+margin_right = 82.0
+margin_bottom = 18.0
+grow_horizontal = 2
+rect_min_size = Vector2( 45, 12 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+align = 1
+
+[node name="flaps" type="Label" parent="menu/fifth_score"]
+margin_left = 80.0
+margin_top = 6.0
+margin_right = 105.0
+margin_bottom = 20.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "0"
+align = 2
+
+[node name="show_scores" type="AnimationPlayer" parent="menu"]
+anims/slide_scores = SubResource( 5 )

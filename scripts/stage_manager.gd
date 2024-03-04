@@ -2,6 +2,7 @@ extends CanvasLayer
 
 const GAME_STAGE = "res://stages/game_stage.tscn"
 const MENU_STAGE = "res://stages/main_menu.tscn"
+const SCORE_STAGE = "res://stages/high_scores.tscn"
 
 signal stage_changed
 
@@ -9,7 +10,6 @@ func _ready():
 	#get_node("amin").connect("animation_finished", self, "_on_animaiton_finished")
 	pass
 func change_stage(stage_path):
-	#fade to black
 	var old_layer = layer
 	layer = 5
 	get_node("amin").play("fade_in")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://scenes/background.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/bird.tscn" type="PackedScene" id=2]
@@ -29,6 +29,10 @@
 [ext_resource path="res://sprites/button_pause.png" type="Texture" id=27]
 [ext_resource path="res://sprites/button_resume.png" type="Texture" id=28]
 [ext_resource path="res://sprites/button_menu.png" type="Texture" id=29]
+[ext_resource path="res://sprites/label_get_ready.png" type="Texture" id=30]
+[ext_resource path="res://scripts/get_ready.gd" type="Script" id=31]
+[ext_resource path="res://audio/sfx_swooshing.wav" type="AudioStream" id=32]
+[ext_resource path="res://scripts/btn_score.gd" type="Script" id=33]
 
 [sub_resource type="GDScript" id=12]
 resource_name = "shaker"
@@ -69,7 +73,7 @@ func _on_bird_state_changed(bird):
 "
 
 [sub_resource type="DynamicFont" id=1]
-size = 14
+size = 19
 font_data = ExtResource( 7 )
 
 [sub_resource type="GDScript" id=2]
@@ -206,10 +210,14 @@ func _ready():
 	if hbox_score_last:
 		hbox_score_last.connect(\"counter_finished\", self, \"show\")
 		
-	pass # Replace with function body.
+	pass
 "
 
+[sub_resource type="Animation" id=13]
+length = 0.001
+
 [sub_resource type="Animation" id=8]
+length = 4.0
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:visible")
 tracks/0/interp = 1
@@ -217,7 +225,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
+"times": PoolRealArray( 1 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ true ]
@@ -229,7 +237,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.7 ),
+"times": PoolRealArray( 1, 1.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
@@ -241,10 +249,10 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.7 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 1, 1.2, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 24, 45 ), Vector2( 24, 50 ) ]
+"values": [ Vector2( 24, 50 ), Vector2( 24, 45 ), Vector2( 24, 50 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("tex_panelscore:rect_position")
@@ -253,10 +261,38 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 0.25, 1 ),
+"times": PoolRealArray( 2.7, 3.2 ),
+"transitions": PoolRealArray( 1, 0.25 ),
 "update": 0,
-"values": [ Vector2( 16, 270 ), Vector2( 16, 90 ) ]
+"values": [ Vector2( 16, 256 ), Vector2( 16, 90 ) ]
+}
+tracks/4/type = "audio"
+tracks/4/path = NodePath("woosh")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"clips": [ {
+"end_offset": 1.0,
+"start_offset": 0.0,
+"stream": ExtResource( 32 )
+} ],
+"times": PoolRealArray( 2.7 )
+}
+tracks/5/type = "audio"
+tracks/5/path = NodePath("woosh")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"clips": [ {
+"end_offset": 0.95,
+"start_offset": 0.0,
+"stream": ExtResource( 32 )
+} ],
+"times": PoolRealArray( 1 )
 }
 
 [sub_resource type="GDScript" id=9]
@@ -313,10 +349,10 @@ func _on_pressed():
 [node name="world" type="Node2D"]
 
 [node name="bird" parent="." instance=ExtResource( 2 )]
-position = Vector2( 35, 128 )
+position = Vector2( 35, 123 )
 
 [node name="camera" type="Camera2D" parent="."]
-offset = Vector2( -36, 0 )
+offset = Vector2( -45, 0 )
 anchor_mode = 0
 current = true
 script = ExtResource( 3 )
@@ -325,6 +361,7 @@ script = ExtResource( 3 )
 script = SubResource( 12 )
 
 [node name="spawner_ground" parent="." instance=ExtResource( 4 )]
+position = Vector2( -35, 256 )
 
 [node name="background" parent="." instance=ExtResource( 1 )]
 
@@ -335,15 +372,20 @@ script = SubResource( 12 )
 [node name="lbl_score" type="Label" parent="hud"]
 margin_top = 10.0
 margin_right = 144.0
-margin_bottom = 24.0
-custom_fonts/font = SubResource( 1 )
+margin_bottom = 30.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 1
 script = ExtResource( 8 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="get_ready" type="TextureRect" parent="hud"]
+margin_left = 25.0
+margin_top = 55.0
+margin_right = 117.0
+margin_bottom = 80.0
+texture = ExtResource( 30 )
+script = ExtResource( 31 )
 
 [node name="btn_pause" type="TextureButton" parent="hud"]
 margin_left = 10.0
@@ -352,17 +394,11 @@ margin_right = 23.0
 margin_bottom = 24.0
 texture_normal = ExtResource( 27 )
 script = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="btn_instruction" type="TextureButton" parent="hud"]
 margin_right = 144.0
 margin_bottom = 256.0
 script = SubResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="texture" type="TextureRect" parent="hud/btn_instruction"]
 margin_left = 44.0
@@ -374,28 +410,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="con_instruciton" type="Container" parent="hud"]
-visible = false
+[node name="con_instruction" type="Container" parent="hud"]
 margin_right = 144.0
 margin_bottom = 256.0
 script = ExtResource( 15 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="tex_gameover" type="TextureRect" parent="hud/con_instruciton"]
+[node name="tex_gameover" type="TextureRect" parent="hud/con_instruction"]
 margin_left = 24.0
 margin_top = 50.0
 margin_right = 120.0
-margin_bottom = 72.0009
+margin_bottom = 71.9998
 texture = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="tex_panelscore" type="TextureRect" parent="hud/con_instruciton"]
+[node name="tex_panelscore" type="TextureRect" parent="hud/con_instruction"]
 margin_left = 16.0
-margin_top = 90.0
+margin_top = 256.0
 margin_right = 129.0
 margin_bottom = 147.0
 texture = ExtResource( 10 )
@@ -403,7 +435,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="hbox_score_last" type="HBoxContainer" parent="hud/con_instruciton/tex_panelscore"]
+[node name="hbox_score_last" type="HBoxContainer" parent="hud/con_instruction/tex_panelscore"]
 margin_left = 60.3482
 margin_top = 16.0
 margin_right = 102.348
@@ -411,17 +443,14 @@ margin_bottom = 26.0
 custom_constants/separation = 1
 alignment = 2
 script = ExtResource( 18 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="tex_number_0" type="TextureRect" parent="hud/con_instruciton/tex_panelscore/hbox_score_last"]
-margin_left = 35.0
-margin_right = 42.0
+[node name="tex_number_0" type="TextureRect" parent="hud/con_instruction/tex_panelscore/hbox_score_last"]
+margin_left = 34.0
+margin_right = 41.0
 margin_bottom = 10.0
 texture = ExtResource( 17 )
 
-[node name="hbox_score_best" type="HBoxContainer" parent="hud/con_instruciton/tex_panelscore"]
+[node name="hbox_score_best" type="HBoxContainer" parent="hud/con_instruction/tex_panelscore"]
 margin_left = 60.3482
 margin_top = 37.0
 margin_right = 102.348
@@ -433,24 +462,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="tex_number_0" type="TextureRect" parent="hud/con_instruciton/tex_panelscore/hbox_score_best"]
-margin_left = 35.0
-margin_right = 42.0
+[node name="tex_number_0" type="TextureRect" parent="hud/con_instruction/tex_panelscore/hbox_score_best"]
+margin_left = 34.0
+margin_right = 41.0
 margin_bottom = 10.0
 texture = ExtResource( 17 )
 
-[node name="tex_new" type="TextureRect" parent="hud/con_instruciton/tex_panelscore"]
-margin_left = 66.1649
-margin_top = 29.3944
-margin_right = 82.1649
-margin_bottom = 36.3944
+[node name="tex_new" type="TextureRect" parent="hud/con_instruction/tex_panelscore"]
+margin_left = 68.0
+margin_top = 29.4
+margin_right = 84.0
+margin_bottom = 36.4
 texture = ExtResource( 20 )
 script = ExtResource( 21 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="tex_medal" type="TextureRect" parent="hud/con_instruciton/tex_panelscore"]
+[node name="tex_medal" type="TextureRect" parent="hud/con_instruction/tex_panelscore"]
 margin_left = 13.0
 margin_top = 21.0
 margin_right = 35.0
@@ -461,15 +487,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="spr_spark" type="AnimatedSprite" parent="hud/con_instruciton/tex_panelscore/tex_medal"]
+[node name="spr_spark" type="AnimatedSprite" parent="hud/con_instruction/tex_panelscore/tex_medal"]
 frames = SubResource( 5 )
 script = ExtResource( 26 )
 
-[node name="anim" type="AnimationPlayer" parent="hud/con_instruciton/tex_panelscore/tex_medal/spr_spark"]
+[node name="anim" type="AnimationPlayer" parent="hud/con_instruction/tex_panelscore/tex_medal/spr_spark"]
 playback_speed = 0.8
 anims/shine = SubResource( 6 )
 
-[node name="hbox_buttons" type="HBoxContainer" parent="hud/con_instruciton"]
+[node name="hbox_buttons" type="HBoxContainer" parent="hud/con_instruction"]
 margin_left = 16.0
 margin_top = 160.0
 margin_right = 129.0
@@ -481,31 +507,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="btn_play" type="TextureButton" parent="hud/con_instruciton/hbox_buttons"]
+[node name="btn_play" type="TextureButton" parent="hud/con_instruction/hbox_buttons"]
 margin_right = 52.0
 margin_bottom = 30.0
 texture_normal = ExtResource( 13 )
 texture_pressed = ExtResource( 12 )
 script = ExtResource( 16 )
 
-[node name="btn_score" type="TextureButton" parent="hud/con_instruciton/hbox_buttons"]
+[node name="btn_score" type="TextureButton" parent="hud/con_instruction/hbox_buttons"]
 margin_left = 61.0
 margin_right = 113.0
 margin_bottom = 30.0
 texture_normal = ExtResource( 11 )
 texture_pressed = ExtResource( 14 )
+script = ExtResource( 33 )
 
-[node name="anim" type="AnimationPlayer" parent="hud/con_instruciton"]
+[node name="anim" type="AnimationPlayer" parent="hud/con_instruction"]
 playback_speed = 1.5
+anims/RESET = SubResource( 13 )
 anims/show = SubResource( 8 )
+
+[node name="woosh" type="AudioStreamPlayer" parent="hud/con_instruction"]
+stream = ExtResource( 32 )
 
 [node name="con_pause" type="Container" parent="hud"]
 margin_right = 144.0
 margin_bottom = 256.0
 script = SubResource( 9 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="hud/con_pause"]
 margin_right = 144.0

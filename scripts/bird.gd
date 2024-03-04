@@ -1,16 +1,21 @@
-# script: bird
 extends RigidBody2D
 
-onready var state = FlyingState.new(self)
+var state
 const STATE_FLYING		= 0
-const STATE_FLAPPING		= 1
+const STATE_FLAPPING	= 1
 const STATE_HIT			= 2
-const STATE_GROUNDED		= 3
-var speed = 50
+const STATE_GROUNDED	= 3
+var speed = 60
 signal state_changed
 var prev_state = STATE_FLAPPING
+var speed_increase = 0
+var momentum = 25
 
 func _ready():
+	utils.get_random_bird()
+	utils.set_random_background()
+
+	state = FlyingState.new(self)
 	add_to_group(game.GROUP_BIRDS)
 	connect("body_entered", self, "_on_body_entered")
 	pass
@@ -52,7 +57,7 @@ class FlyingState:
 	var prev_gravity_scale
 	func _init(bird):
 		self.bird = bird
-		bird.get_node("anim").play("flying")
+		bird.get_node(utils.get_anim()).play("flying")
 		prev_gravity_scale = bird.get_gravity_scale()
 		bird.set_linear_velocity(Vector2(bird.speed, bird.get_linear_velocity().y))
 		bird.set_gravity_scale(0)
@@ -63,8 +68,8 @@ class FlyingState:
 		pass
 	func exit():
 		bird.set_gravity_scale(prev_gravity_scale)
-		bird.get_node("anim").stop();
-		bird.get_node("anim_sprite").position  = Vector2(0,0)
+		bird.get_node(utils.get_anim()).stop();
+		bird.get_node(utils.get_sprite()).position = Vector2(0,0)
 		pass
 		
 class FlappingState:
@@ -74,11 +79,18 @@ class FlappingState:
 		bird.set_linear_velocity(Vector2(bird.speed, bird.get_linear_velocity().y))
 		flap()
 	func update(delta):
-		if bird.rotation < deg2rad(-30):
-			bird.rotation = deg2rad(-30)
+		if bird.rotation < deg2rad(-20):
+			bird.rotation = deg2rad(-20)
 			bird.set_angular_velocity(0)
-		if bird.get_linear_velocity().y > 0:
-			bird.set_angular_velocity(1.5)
+		if bird.get_linear_velocity().y > 0 && bird.momentum <= 0:
+			bird.speed_increase += 0.5
+			if bird.speed_increase > 5:
+				bird.speed_increase = 5
+			bird.set_angular_velocity(bird.speed_increase)
+			if bird.rotation > 1.33:
+				bird.set_angular_velocity(0)
+				
+		bird.momentum -= 1
 	func input(event):
 		if event.is_action_pressed("flap") or (event is InputEventScreenTouch and event.pressed):
 			flap()
@@ -91,9 +103,12 @@ class FlappingState:
 			bird.set_state(bird.STATE_GROUNDED)
 		pass
 	func flap():
+		game.flaps += 1
+		bird.speed_increase = 0
+		bird.momentum = 25
 		bird.set_linear_velocity(Vector2(bird.get_linear_velocity().x, -150))
-		bird.set_angular_velocity(-3)
-		bird.get_node("anim").play("flap")
+		bird.set_angular_velocity(-12)
+		bird.get_node(utils.get_anim()).play("flying")
 		bird.get_node("sfx_wing").play()
 
 class HitState:
@@ -104,12 +119,13 @@ class HitState:
 		bird.set_angular_velocity(2)
 		var other_body = bird.get_colliding_bodies()[0]
 		bird.add_collision_exception_with(other_body)
+		bird.get_node(utils.get_anim()).play("idle")
 		bird.get_node("sfx_hit").play()
 		bird.get_node("sfx_die").play()
 		pass
-	func update(delta):
+	func update(_delta):
 		pass	
-	func input(event):
+	func input(_event):
 		pass
 	func on_body_entered(other_body):
 		if other_body.is_in_group(game.GROUP_GROUNDS):
@@ -122,14 +138,15 @@ class GroundedState:
 	var bird
 	func _init(bird):
 		self.bird = bird
+		bird.get_node(utils.get_anim()).play("idle")
 		bird.set_linear_velocity(Vector2(0,0))
 		bird.set_angular_velocity(0)
 		if bird.prev_state != bird.STATE_HIT:
 			bird.get_node("sfx_hit").play()
 		pass
-	func update(delta):
+	func update(_delta):
 		pass	
-	func input(event):
+	func input(_event):
 		pass
 	func exit():
 		pass

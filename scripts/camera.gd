@@ -1,8 +1,4 @@
-#script: camera
-
 extends Camera2D
-
-#onready var bird = get_node("../Bird")
 onready var bird = utils.get_main_node().get_node("bird")
 
 func _ready():
