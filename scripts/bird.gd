@@ -5,7 +5,7 @@ const STATE_FLYING		= 0
 const STATE_FLAPPING	= 1
 const STATE_HIT			= 2
 const STATE_GROUNDED	= 3
-var speed				= 62
+var speed				= 63
 signal state_changed
 var prev_state = STATE_FLAPPING
 var speed_increase		= 0
@@ -18,19 +18,16 @@ func _ready():
 	state = FlyingState.new(self)
 	add_to_group(game.GROUP_BIRDS)
 	connect("body_entered", self, "_on_body_entered")
-	pass
 
 func _physics_process(delta):
 	state.update(delta)
 
 func _input(event):
 	state.input(event)
-	pass
 
 func _on_body_entered(other_body):
 	if state.has_method("on_body_entered"):
 		state.on_body_entered(other_body)
-	pass
 
 func set_state(new_state):
 	prev_state = get_state()
@@ -44,7 +41,6 @@ func set_state(new_state):
 	elif new_state == STATE_GROUNDED:
 		state = GroundedState.new(self)
 	emit_signal("state_changed", self)
-	pass
 
 func get_state():
 	if state is FlyingState:
@@ -67,7 +63,6 @@ class FlyingState:
 		prev_gravity_scale = bird.get_gravity_scale()
 		bird.set_linear_velocity(Vector2(bird.speed, bird.get_linear_velocity().y))
 		bird.set_gravity_scale(0)
-		pass
 
 	func update(delta):
 		pass
@@ -79,7 +74,6 @@ class FlyingState:
 		bird.set_gravity_scale(prev_gravity_scale)
 		bird.get_node(utils.get_anim()).stop();
 		bird.get_node(utils.get_sprite()).position = Vector2(0,0)
-		pass
 		
 class FlappingState:
 	var bird
@@ -115,7 +109,6 @@ class FlappingState:
 			bird.set_state(bird.STATE_HIT)
 		elif other_body.is_in_group(game.GROUP_GROUNDS):
 			bird.set_state(bird.STATE_GROUNDED)
-		pass
 
 	func flap():
 		if bird.get_position().y < 12:
@@ -140,7 +133,6 @@ class HitState:
 		bird.get_node(utils.get_anim()).play("idle")
 		bird.get_node("sfx_hit").play()
 		bird.get_node("sfx_die").play()
-		pass
 
 	func update(_delta):
 		pass

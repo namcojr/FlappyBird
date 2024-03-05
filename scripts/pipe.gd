@@ -5,9 +5,7 @@ onready var camera = utils.get_main_node().get_node("camera")
 
 func _ready():
 	add_to_group(game.GROUP_PIPES)
-	pass
 
 func _process(delta):
 	if right.get_global_position().x <= camera.get_total_pos().x:
 		queue_free()
-	pass

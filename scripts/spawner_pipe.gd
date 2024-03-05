@@ -2,29 +2,29 @@
  
 extends Node2D
 
-var wait_pipes = 3
-	
 const scn_pipe = preload("res://scenes/pipe.tscn")
 const PIPE_WIDTH = 26
 const GROUND_HEIGHT = 56
 const OFFSET_Y = 55
-const OFFSET_X = 65
+const OFFSET_X = 60
 const AMOUNT_TO_FILL_VIEW = 3
+const pipes = [
+	preload("res://sprites/pipe_red_top.png"),
+	preload("res://sprites/pipe_red_bottom.png"),
+	preload("res://sprites/pipe_green_top.png"),
+	preload("res://sprites/pipe_green_bottom.png")
+]
 
 func _ready():
 	var bird = utils.get_main_node().get_node("bird")
 	if (bird):
 		bird.connect("state_changed", self, "_on_bird_state_changed", [], CONNECT_ONESHOT)
-	pass
 	
 func _on_bird_state_changed(bird):
 	if bird.get_state() == bird.STATE_FLAPPING:
-		
 		yield(get_tree(), "idle_frame")
 		yield(get_tree().create_timer(2.5), "timeout")
-		
 		start()
-	pass
 
 func start():
 	go_init_pos()
@@ -40,12 +40,10 @@ func go_init_pos():
 	if camera:
 		init_pos.x += camera.get_total_pos().x
 	position = init_pos
-	pass
 
 func spawn_and_move():
 	spawn_pipe()
 	go_next_pos()
-	pass
 	
 func spawn_pipe():
 	var new_pipe = scn_pipe.instance()
@@ -53,11 +51,11 @@ func spawn_pipe():
 	var random_number = randf()
 
 	if random_number <= probability:
-		new_pipe.get_child(0).texture = load("res://sprites/pipe_red_top.png")
-		new_pipe.get_child(1).texture = load("res://sprites/pipe_red_bottom.png")
+		new_pipe.get_child(0).texture = pipes[0]
+		new_pipe.get_child(1).texture = pipes[1]
 	else:
-		new_pipe.get_child(0).texture = load("res://sprites/pipe_green_top.png")
-		new_pipe.get_child(1).texture = load("res://sprites/pipe_green_bottom.png")
+		new_pipe.get_child(0).texture = pipes[2]
+		new_pipe.get_child(1).texture = pipes[3]
 
 	new_pipe.position = position;
 	new_pipe.connect("tree_exited", self, "spawn_and_move")
