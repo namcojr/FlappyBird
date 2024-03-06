@@ -3,8 +3,8 @@ extends CanvasLayer
 const GAME_STAGE = "res://stages/game_stage.tscn"
 const MENU_STAGE = "res://stages/main_menu.tscn"
 const SCORE_STAGE = "res://stages/high_scores.tscn"
-
 signal stage_changed
+var old_stage
 
 func _ready():
 	pass
@@ -17,6 +17,6 @@ func change_stage(stage_path):
 	yield(get_node("amin"), "animation_finished")
 
 	get_tree().change_scene(stage_path)
+	old_stage = stage_path
 	layer = old_layer
 	emit_signal("stage_changed")
-	pass

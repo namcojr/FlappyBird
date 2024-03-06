@@ -133,6 +133,7 @@ class HitState:
 		bird.get_node(utils.get_anim()).play("idle")
 		bird.get_node("sfx_hit").play()
 		bird.get_node("sfx_die").play()
+		utils.get_main_node().get_node("hud/con_instruction/anim").play("show")
 
 	func update(_delta):
 		pass
@@ -158,7 +159,7 @@ class GroundedState:
 		bird.set_angular_velocity(0)
 		if bird.prev_state != bird.STATE_HIT:
 			bird.get_node("sfx_hit").play()
-		pass
+			utils.get_main_node().get_node("hud/con_instruction/anim").play("show")
 
 	func update(_delta):
 		pass

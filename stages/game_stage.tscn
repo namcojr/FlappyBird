@@ -30,7 +30,6 @@
 [ext_resource path="res://sprites/button_resume.png" type="Texture" id=28]
 [ext_resource path="res://sprites/button_menu.png" type="Texture" id=29]
 [ext_resource path="res://sprites/label_get_ready.png" type="Texture" id=30]
-[ext_resource path="res://scripts/get_ready.gd" type="Script" id=31]
 [ext_resource path="res://audio/sfx_swooshing.wav" type="AudioStream" id=32]
 [ext_resource path="res://scripts/btn_score.gd" type="Script" id=33]
 
@@ -124,31 +123,36 @@ func _on_bird_state_changed(bird):
 "
 
 [sub_resource type="GDScript" id=3]
-script/source = "#script: btn_instruction (built-in)
-extends TextureButton
+script/source = "extends TextureButton
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = \"text\"
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	connect(\"pressed\", self, \"_on_pressed\")
 	grab_focus()
-	pass # Replace with function body.
 
 
 func _on_pressed():
 	var bird = utils.get_main_node().get_node(\"bird\")
 	if bird:
 		bird.set_state(bird.STATE_FLAPPING)
-	hide()
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+	utils.get_main_node().get_node(\"hud\").get_node(\"btn_instruction\").get_node(\"hide_instructions\").play(\"play\")
+	disabled = true
 "
+
+[sub_resource type="Animation" id=15]
+resource_name = "play"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
 
 [sub_resource type="GDScript" id=4]
 resource_name = "tex_medal"
@@ -287,10 +291,10 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 2.4, 2.9 ),
-"transitions": PoolRealArray( 1, 0.25 ),
+"times": PoolRealArray( 0, 2.4, 2.9 ),
+"transitions": PoolRealArray( 1, 1, 0.25 ),
 "update": 0,
-"values": [ Vector2( 16, 256 ), Vector2( 16, 90 ) ]
+"values": [ Vector2( 16, 256 ), Vector2( 16, 256 ), Vector2( 16, 90 ) ]
 }
 tracks/4/type = "audio"
 tracks/4/path = NodePath("woosh")
@@ -417,14 +421,6 @@ text = "0"
 align = 1
 script = ExtResource( 8 )
 
-[node name="get_ready" type="TextureRect" parent="hud"]
-margin_left = 25.0
-margin_top = 55.0
-margin_right = 117.0
-margin_bottom = 80.0
-texture = ExtResource( 30 )
-script = ExtResource( 31 )
-
 [node name="btn_pause" type="TextureButton" parent="hud"]
 margin_left = 10.0
 margin_top = 10.0
@@ -438,6 +434,13 @@ margin_right = 144.0
 margin_bottom = 256.0
 script = SubResource( 3 )
 
+[node name="get_ready" type="TextureRect" parent="hud/btn_instruction"]
+margin_left = 25.0
+margin_top = 55.0
+margin_right = 117.0
+margin_bottom = 80.0
+texture = ExtResource( 30 )
+
 [node name="texture" type="TextureRect" parent="hud/btn_instruction"]
 margin_left = 44.0
 margin_top = 104.0
@@ -447,6 +450,9 @@ texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="hide_instructions" type="AnimationPlayer" parent="hud/btn_instruction"]
+anims/play = SubResource( 15 )
 
 [node name="con_instruction" type="Container" parent="hud"]
 margin_right = 144.0
@@ -465,9 +471,9 @@ __meta__ = {
 
 [node name="tex_panelscore" type="TextureRect" parent="hud/con_instruction"]
 margin_left = 16.0
-margin_top = 256.0
+margin_top = 90.0
 margin_right = 129.0
-margin_bottom = 313.0
+margin_bottom = 147.0
 texture = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
