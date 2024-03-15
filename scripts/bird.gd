@@ -94,6 +94,7 @@ class FlappingState:
 			bird.set_angular_velocity(bird.speed_increase)
 			if bird.rotation > 1.33:
 				bird.set_angular_velocity(0)
+				bird.get_node(utils.get_anim()).play("idle")
 				
 		bird.momentum -= 1
 
